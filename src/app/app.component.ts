@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { JsonPerfilMainComponent } from "./components/json-perfil-main/json-perfil-main.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [ JsonPerfilMainComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
