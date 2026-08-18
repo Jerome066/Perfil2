@@ -1,0 +1,21 @@
+.grupo-registro {
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  background: #fff;
+}
+
+h3 { margin: 0 0 10px; font-size: 1rem; }
+
+.fila-registro {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 7px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.fila-registro span { color: #555; }
+.fila-registro strong { overflow-wrap: anywhere; text-align: right; }
+.vacio { color: #666; margin: 0; }

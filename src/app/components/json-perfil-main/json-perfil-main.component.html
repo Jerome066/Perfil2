@@ -1,8 +1,39 @@
 <app-json-tree (arbolConstruido)="obtenerArbol($event)"></app-json-tree>
 
 @if (tieneArchivo()) {
-    <app-json-tabs [tabs] = this.tabs() (tabActual)="ActualizarTab($event)"></app-json-tabs>
-    @for (opcion of cargarMenu(); track $index) {
-        <button>{{opcion.informacion}}</button>
+  <app-json-tabs [tabs]="tabs()" (tabActual)="actualizarTab($event)"></app-json-tabs>
+
+  @if (menus().length > 0) {
+    <div class="menu-container">
+      @for (opcion of menus(); track opcion.option) {
+        <button class="menu-button" [class.active]="opcionSeleccionada() === opcion"
+          (click)="seleccionarOpcion(opcion)">
+          {{ formatoString(opcion.option) }}
+        </button>
+      }
+    </div>
+  }
+
+  <div class="filtros">
+    <label for="filtro">Filtrar registros</label>
+    <input id="filtro" type="search" [ngModel]="terminoBusqueda()"
+      (ngModelChange)="actualizarFiltro($event)" placeholder="Nombre o valor">
+  </div>
+
+  <div class="contenido">
+    @if (registrosPaginados().length > 0) {
+      <app-json-information [registros]="registrosPaginados()"></app-json-information>
+    } @else {
+      <p>No hay registros que coincidan con el filtro.</p>
     }
+  </div>
+
+  @if (registrosFiltrados().length > 0) {
+    <mat-paginator class="paginador" [length]="registrosFiltrados().length" [pageSize]="pageSize()"
+      [pageIndex]="pageIndex()" [pageSizeOptions]="[5, 10, 15, 25]" [showFirstLastButtons]="true"
+      (page)="cambiarPagina($event)">
+    </mat-paginator>
+  }
+} @else {
+  <h2>Ingresa un archivo JSON</h2>
 }

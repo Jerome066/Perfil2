@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { JsonTreeComponent } from './json-tree.component';
+import { JsonInformationComponent } from './json-information.component';
 
-describe('JsonTreeComponent', () => {
-  let component: JsonTreeComponent;
-  let fixture: ComponentFixture<JsonTreeComponent>;
+describe('JsonInformationComponent', () => {
+  let component: JsonInformationComponent;
+  let fixture: ComponentFixture<JsonInformationComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [JsonTreeComponent]
+      imports: [JsonInformationComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(JsonTreeComponent);
+    fixture = TestBed.createComponent(JsonInformationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

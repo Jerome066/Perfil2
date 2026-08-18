@@ -25,6 +25,10 @@ export class JsonTreeComponent {
       const text = await file.text();
       const parsed = JSON.parse(text);
 
+      if (Array.isArray(parsed) || parsed === null || typeof parsed !== 'object') {
+        throw new Error('La raíz debe ser un objeto');
+      }
+
       this.jsonData.set(parsed);
 
       const arbol = this.construirArbol(parsed);
@@ -32,6 +36,7 @@ export class JsonTreeComponent {
       this.arbol.set(arbol);
 
       this.arbolConstruido.emit(arbol);
+      this.error.set(null);
 
     } catch {
       this.error.set("JSON inválido");
@@ -50,7 +55,7 @@ export class JsonTreeComponent {
           ruta: ruta + `[${index}]`,
           nivel,
           tipo: Array.isArray(item) ? 'array' : item === null ? 'null' : typeof item as JsonNode['tipo'],
-          valor: typeof item === 'object' ? undefined : item,
+          valor: item !== null && typeof item === 'object' ? undefined : item,
           hijos: this.construirArbol(item, `[${index}]`, ruta + `[${index}]`, nivel + 1)
         });
       });
@@ -61,7 +66,7 @@ export class JsonTreeComponent {
           nombre: llave,
           ruta: ruta ? `${ruta}.${llave}` : llave, nivel,
           tipo: Array.isArray(valor) ? 'array' : valor === null ? 'null' : typeof valor as JsonNode['tipo'],
-          valor: typeof valor === 'object' ? undefined : valor,
+          valor: valor !== null && typeof valor === 'object' ? undefined : valor,
           hijos: this.construirArbol(valor, llave, ruta ? `${ruta}.${llave}` : llave, nivel + 1)
         });
       });
