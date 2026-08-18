@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, output, signal } from '@angular/core';
 import { JsonNode } from '../../models/json-node';
 
 @Component({
@@ -13,6 +13,8 @@ export class JsonTreeComponent {
   arbol = signal<JsonNode[]>([]);
   error = signal<string | null>(null);
 
+  arbolConstruido = output<JsonNode[]>();
+
   async onFileSelected(event: Event): Promise<void> {
 
     const input = event.target as HTMLInputElement;
@@ -24,14 +26,19 @@ export class JsonTreeComponent {
       const parsed = JSON.parse(text);
 
       this.jsonData.set(parsed);
-      this.arbol.set(
-        this.construirArbol(parsed)
-      );
+
+      const arbol = this.construirArbol(parsed);
+
+      this.arbol.set(arbol);
+
+      this.arbolConstruido.emit(arbol);
+
     } catch {
       this.error.set("JSON inválido");
       this.jsonData.set(null);
       this.arbol.set([]);
     }
+
   }
 
   construirArbol(dato: unknown, nombre = "ROOT", ruta = "", nivel = 0): JsonNode[] {

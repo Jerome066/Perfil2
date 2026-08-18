@@ -1,1 +1,8 @@
-<app-json-tree></app-json-tree>
+<app-json-tree (arbolConstruido)="obtenerArbol($event)"></app-json-tree>
+
+@if (tieneArchivo()) {
+    <app-json-tabs [tabs] = this.tabs() (tabActual)="ActualizarTab($event)"></app-json-tabs>
+    @for (opcion of cargarMenu(); track $index) {
+        <button>{{opcion.informacion}}</button>
+    }
+}
