@@ -69,9 +69,10 @@ export class JsonPerfilMainComponent {
     this.opcionSeleccionada.set(opcion);
     this.pageIndex.set(0);
     const registrosOpcion = this.datosArbol.obtenerRegistros([opcion.informacion]);
-    const registrosPaginables = opcion.informacion.tipo === 'array'
+    const registrosBase = opcion.informacion.tipo === 'array'
       ? (registrosOpcion[0]?.sugDato ?? [])
       : registrosOpcion;
+    const registrosPaginables = this.datosArbol.obtenerRegistrosMostrables(registrosBase);
 
     this.registros.set([
       // ...this.datosArbol.obtenerDatosPrimitivos(), // datos primitivos sueltos del JSON 
