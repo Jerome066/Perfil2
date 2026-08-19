@@ -82,6 +82,16 @@ export class JsonServiceService {
     return registros;
   }
 
+  obtenerRegistrosMostrables(registros: JsonInfo[]): JsonInfo[] {
+    return registros.flatMap(registro => {
+      const camposDirectos = registro.sugDato.filter(campo => !campo.esTitulo);
+      if (!registro.esTitulo || camposDirectos.length > 0) {
+        return [registro];
+      }
+      return this.obtenerRegistrosMostrables(registro.sugDato);
+    });
+  }
+
   private tratarPrimitivo(nodo: JsonNode): JsonInfo {
 
     return {
