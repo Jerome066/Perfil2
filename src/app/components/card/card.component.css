@@ -1,0 +1,24 @@
+.tarjetas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.campo {
+    display: grid;
+    grid-template-columns: 140px minmax(0, 1fr);
+    gap: 12px;
+    padding: 6px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.campo span {
+    color: #555;
+    overflow-wrap: anywhere;
+}
+
+.campo strong {
+    text-align: left;
+    overflow-wrap: anywhere;
+}

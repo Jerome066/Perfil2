@@ -1,1 +1,19 @@
-<p>card works!</p>
+<div class="tarjetas">
+  @for (registro of registros(); track $index) {
+  <mat-card>
+    @if (!titulo(registro).includes("[")) {
+      <mat-card-header><mat-card-title>{{ titulo(registro) }}</mat-card-title></mat-card-header>
+    }
+    <mat-card-content>
+      @for (campo of camposVisibles(registro); track $index) {
+      <div class="campo">
+        <strong>{{ campo.etiqueta }}</strong>
+        <span>{{ campo.dato }}</span>
+      </div>
+      }
+    </mat-card-content>
+    <mat-card-actions><button mat-button type="button" (click)="abrirDetalle(registro)">Ver
+        detalles</button></mat-card-actions>
+  </mat-card>
+  }
+</div>

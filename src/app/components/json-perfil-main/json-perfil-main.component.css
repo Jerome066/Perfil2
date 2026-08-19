@@ -43,12 +43,34 @@
     border-color: #0069d9;
 }
 
-.filtros, .contenido {
+.filtros,
+.contenido {
     max-width: 860px;
     margin: 12px auto;
     padding: 0 12px;
 }
 
-.filtros { display: flex; align-items: center; gap: 10px; }
-.filtros input { flex: 1; padding: 8px; border: 1px solid #aaa; border-radius: 5px; }
-.paginador { max-width: 960px; margin: 0 auto; }
+.filtros {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filtros input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+}
+
+.paginador {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.contenido {
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+    padding: 0 16px;
+}

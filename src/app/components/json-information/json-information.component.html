@@ -1,17 +1,5 @@
-@for (registro of registros(); track $index) {
-  @if (registro.esTitulo) {
-    <section class="grupo-registro">
-      <h3>{{ registro.dato }}</h3>
-      @if (registro.sugDato.length > 0) {
-        <app-json-information [registros]="registro.sugDato"></app-json-information>
-      } @else {
-        <p class="vacio">Sin elementos</p>
-      }
-    </section>
-  } @else {
-    <div class="fila-registro">
-      <span>{{ registro.etiqueta }}</span>
-      <p>{{ registro.dato }}</p>
-    </div>
-  }
+@if (vista() === 'tabla') {
+  <app-table [registros]="registros()"></app-table>
+} @else {
+  <app-card [registros]="registros()"></app-card>
 }

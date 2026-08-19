@@ -31,6 +31,7 @@ export class JsonPerfilMainComponent {
   terminoBusqueda = signal('');
   pageSize = signal(5);
   pageIndex = signal(0);
+  vista = signal<'tabla' | 'tarjeta'>('tabla');
 
   registrosFiltrados = computed(() =>
     this.datosArbol.filtrarRegistros(this.registros(), this.terminoBusqueda())
@@ -91,5 +92,9 @@ export class JsonPerfilMainComponent {
   cambiarPagina(evento: PageEvent): void {
     this.pageIndex.set(evento.pageIndex);
     this.pageSize.set(evento.pageSize);
+  }
+
+  cambiarVista(vista: 'tabla' | 'tarjeta'): void {
+    this.vista.set(vista);
   }
 }

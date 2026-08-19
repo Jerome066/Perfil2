@@ -16,15 +16,18 @@
   <div class="filtros">
     <label for="filtro">Filtrar registros</label>
     <input id="filtro" type="search" [ngModel]="terminoBusqueda()" (ngModelChange)="actualizarFiltro($event)" placeholder="Nombre o valor">
-    <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
-      <mat-button-toggle value="bold">Tabla</mat-button-toggle>
-      <mat-button-toggle value="italic">Tarjeta</mat-button-toggle>
+    
+    
+    <mat-button-toggle-group name="vista" aria-label="Cambiar vista" [value]="vista()"
+      (change)="cambiarVista($event.value)">
+      <mat-button-toggle value="tabla">Tabla</mat-button-toggle>
+      <mat-button-toggle value="tarjeta">Tarjeta</mat-button-toggle>
     </mat-button-toggle-group>
   </div>
 
   <div class="contenido">
     @if (registrosPaginados().length > 0) {
-      <app-json-information [registros]="registrosPaginados()"></app-json-information>
+      <app-json-information [registros]="registrosPaginados()" [vista]="vista()"></app-json-information>
     } @else {
       <p>No hay registros que coincidan con el filtro.</p>
     }

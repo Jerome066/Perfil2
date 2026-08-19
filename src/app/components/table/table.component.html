@@ -1,1 +1,26 @@
-<p>table works!</p>
+<div class="tabla-contenedor">
+  @if (columnas().length > 0) {
+    <table>
+      <thead>
+        <tr>
+          @for (columna of columnas(); track columna) {
+            <th>{{ etiqueta(columna) }}</th>
+          }
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (registro of registros(); track $index) {
+          <tr>
+            @for (columna of columnas(); track columna) {
+              <td>{{ valor(registro, columna) }}</td>
+            }
+            <td><button mat-button type="button" (click)="abrirDetalle(registro)">Ver detalles</button></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  } @else {
+    <p>Este registro no contiene datos simples para mostrar.</p>
+  }
+</div>

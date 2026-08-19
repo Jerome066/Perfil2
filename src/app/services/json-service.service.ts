@@ -215,7 +215,6 @@ export class JsonServiceService {
     if (!busqueda) {
       return registros;
     }
-
     return registros.flatMap(registro => this.filtrarRegistro(registro, busqueda));
   }
 
@@ -229,7 +228,9 @@ export class JsonServiceService {
       return [];
     }
 
-    return [{ ...registro, sugDato: coincide ? registro.sugDato : hijos }];
+    // Si un campo interno coincide, se conserva el registro completo para
+    // mostrar su contexto y no únicamente el dato que coincidió.
+    return [{ ...registro, sugDato: registro.sugDato }];
   }
 
 

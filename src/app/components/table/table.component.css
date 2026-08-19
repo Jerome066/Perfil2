@@ -1,0 +1,4 @@
+.tabla-contenedor { overflow-x: auto; margin-top: 16px; }
+table { width: 100%; border-collapse: collapse; background: #fff; }
+th, td { padding: 10px; border-bottom: 1px solid #ddd; text-align: left; vertical-align: top; }
+th { background: #f3f6fa; text-transform: capitalize; }

@@ -1,4 +1,16 @@
+@if (!registro?.dato?.includes("[")) {
+  <h2 mat-dialog-title>{{ registro?.etiqueta ?? registro?.dato ?? 'Detalles' }}</h2>
+}
+<mat-dialog-content>
+  @for (detalle of detalles; track $index) {
+    @if (!detalle.etiqueta.includes("[")) {
+      <div class="detalle" [style.padding-left.px]="detalle.nivel * 16">
+        <strong>{{ detalle.etiqueta }}</strong>
+        <span>{{ detalle.valor }}</span>
+      </div>
+    }
+  }
+</mat-dialog-content>
 <mat-dialog-actions align="end">
-    <!-- mat-dialog-close cierra la ventana sin modificar el registro original. -->
-    <button mat-button mat-dialog-close type="button">Cerrar</button>
+  <button mat-button mat-dialog-close type="button">Cerrar</button>
 </mat-dialog-actions>
