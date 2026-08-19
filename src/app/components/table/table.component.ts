@@ -13,9 +13,10 @@ import { DialogComponent } from '../dialog/dialog.component';
 export class TableComponent {
   private dialog = inject(MatDialog);
   registros = input<JsonInfo[]>([]);
+  filas = computed(() => this.obtenerFilas(this.registros()));
   columnas = computed(() => {
     const nombres = new Set<string>();
-    for (const registro of this.registros()) {
+    for (const registro of this.filas()) {
       for (const campo of this.camposVisibles(registro)) {
         nombres.add(campo.etiqueta ?? campo.dato);
         if (nombres.size === 5) return [...nombres];
@@ -41,5 +42,15 @@ export class TableComponent {
     return registro.esTitulo
       ? registro.sugDato.filter(campo => !campo.esTitulo).slice(0, 5)
       : [registro];
+  }
+
+  private obtenerFilas(registros: JsonInfo[]): JsonInfo[] {
+    return registros.flatMap(registro => {
+      if (!registro.esTitulo || this.camposVisibles(registro).length > 0) {
+        return [registro];
+      }
+      // En caso de no tener columnas propias: se bajan sus hijos hasta encontrar registros útiles.
+      return this.obtenerFilas(registro.sugDato);
+    });
   }
 }

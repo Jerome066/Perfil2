@@ -10,7 +10,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (registro of registros(); track $index) {
+        @for (registro of filas(); track $index) {
           <tr>
             @for (columna of columnas(); track columna) {
               <td>{{ valor(registro, columna) }}</td>
