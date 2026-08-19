@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { JsonTreeComponent } from '../json-tree/json-tree.component';
 import { JsonTabsComponent } from '../json-tabs/json-tabs.component';
 import { JsonInformationComponent } from '../json-information/json-information.component';
@@ -13,7 +14,7 @@ import { JsonInfo } from '../../models/json-info';
 
 @Component({
   selector: 'app-json-perfil-main',
-  imports: [JsonTreeComponent, MatTabsModule, MatPaginatorModule, JsonTabsComponent, FormsModule, JsonInformationComponent],
+  imports: [JsonTreeComponent, MatTabsModule, MatPaginatorModule, JsonTabsComponent, FormsModule, JsonInformationComponent, MatButtonToggleModule],
   templateUrl: './json-perfil-main.component.html',
   styleUrl: './json-perfil-main.component.css'
 })
@@ -30,7 +31,7 @@ export class JsonPerfilMainComponent {
   terminoBusqueda = signal('');
   pageSize = signal(5);
   pageIndex = signal(0);
-  
+
   registrosFiltrados = computed(() =>
     this.datosArbol.filtrarRegistros(this.registros(), this.terminoBusqueda())
   );
@@ -60,6 +61,7 @@ export class JsonPerfilMainComponent {
 
     this.opcionSeleccionada.set(null);
     this.registros.set(this.datosArbol.obtenerDatosPrimitivos());
+    
   }
 
   seleccionarOpcion(opcion: JsonMenu): void {
@@ -71,9 +73,10 @@ export class JsonPerfilMainComponent {
       : registrosOpcion;
 
     this.registros.set([
-      ...this.datosArbol.obtenerDatosPrimitivos(),
+      // ...this.datosArbol.obtenerDatosPrimitivos(), // datos primitivos sueltos del JSON 
       ...registrosPaginables
     ]);
+    console.log(this.datosArbol.obtenerDatosPrimitivos());
   }
 
   formatoString(cadena: string): string {

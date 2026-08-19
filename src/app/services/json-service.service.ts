@@ -47,7 +47,6 @@ export class JsonServiceService {
         this.datosPrimitivos.push(nodo);
       }
     }
-
     return this.menus;
   }
 
@@ -64,17 +63,13 @@ export class JsonServiceService {
     const registros: JsonInfo[] = [];
 
     for (const nodo of nodos) {
-
       switch (nodo.tipo) {
-
         case 'object':
           registros.push(...this.tratarObject(nodo));
           break;
-
         case 'array':
           registros.push(...this.tratarArray(nodo));
           break;
-
         case 'string':
         case 'number':
         case 'boolean':
@@ -112,38 +107,28 @@ export class JsonServiceService {
     };
 
     for (const hijo of nodo.hijos) {
-
       const registrosHijo = this.obtenerRegistros([hijo]);
-
       titulo.sugDato.push(...registrosHijo);
-
     }
 
     informacion.push(titulo);
-
     return informacion;
   }
 
   private tratarArray(nodo: JsonNode): JsonInfo[] {
-
     if (nodo.hijos.length === 0) {
       return [];
     }
-
     if (this.esArrayDePrimitivos(nodo.hijos)) {
       return this.tratarArrayDePrimitivos(nodo);
     }
-
     if (this.esArrayDeObjetos(nodo.hijos)) {
       return this.tratarArrayDeObjetos(nodo);
     }
-
     if (this.esArrayDeArrays(nodo.hijos)) {
       return this.tratarArrayDeArrays(nodo);
     }
-
     return this.tratarArrayMixto(nodo);
-
   }
 
   private tratarArrayDePrimitivos(nodo: JsonNode): JsonInfo[] {
@@ -157,7 +142,6 @@ export class JsonServiceService {
     };
 
     for (const hijo of nodo.hijos) {
-
       informacion.sugDato.push(
         this.tratarPrimitivo(hijo)
       );

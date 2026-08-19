@@ -6,8 +6,7 @@
   @if (menus().length > 0) {
     <div class="menu-container">
       @for (opcion of menus(); track opcion.option) {
-        <button class="menu-button" [class.active]="opcionSeleccionada() === opcion"
-          (click)="seleccionarOpcion(opcion)">
+        <button class="menu-button" [class.active]="opcionSeleccionada() === opcion" (click)="seleccionarOpcion(opcion)">
           {{ formatoString(opcion.option) }}
         </button>
       }
@@ -16,8 +15,11 @@
 
   <div class="filtros">
     <label for="filtro">Filtrar registros</label>
-    <input id="filtro" type="search" [ngModel]="terminoBusqueda()"
-      (ngModelChange)="actualizarFiltro($event)" placeholder="Nombre o valor">
+    <input id="filtro" type="search" [ngModel]="terminoBusqueda()" (ngModelChange)="actualizarFiltro($event)" placeholder="Nombre o valor">
+    <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+      <mat-button-toggle value="bold">Tabla</mat-button-toggle>
+      <mat-button-toggle value="italic">Tarjeta</mat-button-toggle>
+    </mat-button-toggle-group>
   </div>
 
   <div class="contenido">
@@ -30,7 +32,7 @@
 
   @if (registrosFiltrados().length > 0) {
     <mat-paginator class="paginador" [length]="registrosFiltrados().length" [pageSize]="pageSize()"
-      [pageIndex]="pageIndex()" [pageSizeOptions]="[5, 10, 15, 25]" [showFirstLastButtons]="true"
+      [pageIndex]="pageIndex()" [pageSizeOptions]="[5, 10, 20, 50, 100]" [showFirstLastButtons]="true"
       (page)="cambiarPagina($event)">
     </mat-paginator>
   }
