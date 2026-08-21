@@ -1,16 +1,62 @@
-@if (!registro?.dato?.includes("[")) {
-  <h2 mat-dialog-title>{{ registro?.etiqueta ?? registro?.dato ?? 'Detalles' }}</h2>
-}
+@if (registro) {
+<h2 mat-dialog-title>{{ registro.etiqueta ?? 'Detalles' }}</h2>
+
 <mat-dialog-content>
-  @for (detalle of detalles; track $index) {
-    @if (!detalle.etiqueta.includes("[")) {
-      <div class="detalle" [style.padding-left.px]="detalle.nivel * 16">
-        <strong>{{ detalle.etiqueta }}</strong>
-        <span>{{ detalle.valor }}</span>
-      </div>
+  <div class="detalles">
+    @for (hijo of registro.sugDato; track $index) {
+    <ng-container *ngTemplateOutlet="nodoTpl; context: { $implicit: hijo }"></ng-container>
     }
-  }
+  </div>
 </mat-dialog-content>
+}
+
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close type="button">Cerrar</button>
 </mat-dialog-actions>
+
+<!-- Template recursivo -->
+<ng-template #nodoTpl let-nodo>
+  @switch (tipoContenido(nodo)) {
+  @case ('imagen') {
+  <div class="detalle detalle-media">
+    @if (nodo.etiqueta) { <strong>{{ nodo.etiqueta }}</strong> }
+    <img [src]="urlMedia(nodo)" [alt]="nodo.etiqueta || 'Imagen'" class="detalle-imagen" loading="lazy" />
+  </div>
+  }
+
+  @case ('documento') {
+  <div class="detalle">
+    @if (nodo.etiqueta) { <strong>{{ nodo.etiqueta }}</strong> }
+    <a [href]="urlMedia(nodo)" target="_blank" rel="noopener noreferrer" class="detalle-documento">Ver
+    </a>
+  </div>
+  }
+
+  @case ('link') {
+  <div class="detalle">
+    @if (nodo.etiqueta) { <strong>{{ nodo.etiqueta }}</strong> }
+    <a [href]="urlMedia(nodo)" target="_blank" rel="noopener noreferrer">
+      ver
+    </a>
+  </div>
+  }
+
+  @case ('grupo') {
+  <div class="detalle-grupo">
+    @if (nodo.etiqueta) {
+    <div class="detalle-grupo-titulo"><strong>{{ nodo.etiqueta }}</strong></div>
+    }
+    @for (hijo of nodo.sugDato; track $index) {
+    <ng-container *ngTemplateOutlet="nodoTpl; context: { $implicit: hijo }"></ng-container>
+    }
+  </div>
+  }
+
+  @default {
+  <div class="detalle">
+    @if (nodo.etiqueta) { <strong>{{ nodo.etiqueta }}</strong> }
+    <span>{{ nodo.dato }}</span>
+  </div>
+  }
+  }
+</ng-template>
