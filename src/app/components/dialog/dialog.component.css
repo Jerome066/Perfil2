@@ -14,3 +14,16 @@
 .detalle strong {
     overflow-wrap: anywhere;
 }
+
+.separador {
+    border: none;
+    height: 2px;
+    background-color: #333333;
+    width: 80%;
+    margin: 20px auto;
+}
+
+.detalle-grupo-titulo{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}

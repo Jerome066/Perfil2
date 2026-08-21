@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { JsonInfo } from '../../models/json-info';
 
+
 type TipoContenido = 'imagen' | 'documento' | 'link' | 'grupo' | 'texto';
 
 @Component({
@@ -33,24 +34,26 @@ export class DialogComponent {
   }
 
   tipoContenido(nodo: JsonInfo): TipoContenido {
-    if (this.esGrupoMedia(nodo)) {
-      const ct = (this.hijoContentType(nodo)?.dato ?? '').toLowerCase();
-      const url = this.urlMedia(nodo);
+  if (this.esGrupoMedia(nodo)) {
+    const ct = (this.hijoContentType(nodo)?.dato ?? '').toLowerCase();
+    const url = this.urlMedia(nodo);
 
-      if (ct.startsWith('image/') || this.esImagen(url)) return 'imagen';
-      if (this.esContentTypeDocumento(ct) || this.esDocumento(url)) return 'documento';
-      return 'link';
-    }
-
-    if (nodo.tipoDato === 'object') {
-      return 'grupo';
-    }
-
-    if (this.esImagen(nodo.dato)) return 'imagen';
-    if (this.esDocumento(nodo.dato)) return 'documento';
-    if (this.esLink(nodo.dato)) return 'link';
-    return 'texto';
+    if (ct.startsWith('image/') || this.esImagen(url)) return 'imagen';
+    if (this.esContentTypeDocumento(ct) || this.esDocumento(url)) return 'documento';
+    return 'link';
   }
+
+  // Cualquier nodo con hijos reales (object, array-object, o lo que venga)
+  // se trata como grupo y se recursa.
+  if (nodo.sugDato && nodo.sugDato.length > 0) {
+    return 'grupo';
+  }
+
+  if (this.esImagen(nodo.dato)) return 'imagen';
+  if (this.esDocumento(nodo.dato)) return 'documento';
+  if (this.esLink(nodo.dato)) return 'link';
+  return 'texto';
+}
 
   esContentTypeDocumento(contentType: string): boolean {
     const tiposDocumento = [
@@ -80,5 +83,15 @@ export class DialogComponent {
 
   esLink(valor: string): boolean {
     return /^(https?:\/\/|www\.)[^\s]+$/i.test((valor ?? '').trim());
+  }
+
+  formarString(key: string): string {
+    const withSpaces = key
+      .replace(/([a-z])([A-Z])/g, '$1 $2') // camelCase
+      .replace(/[_-]/g, ' ');               // snake_case / kebab-case
+    return withSpaces
+      .split(' ')
+      .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ');
   }
 }
