@@ -26,6 +26,6 @@ export class CardComponent {
   }
 
   abrirDetalle(registro: JsonInfo): void {
-    this.dialog.open(DialogComponent, { data: registro, width: '640px', maxWidth: '95vw' });
+    this.dialog.open(DialogComponent, { data: registro, width: '740px', maxWidth: '95vw' });
   }
 }
