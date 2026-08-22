@@ -4,7 +4,9 @@
       <thead>
         <tr>
           @for (columna of columnas(); track columna) {
-            <th>{{ etiqueta(columna) }}</th>
+            @if (etiqueta(columna).toLocaleLowerCase() !== "id") {
+              <th>{{ etiqueta(columna) }}</th>
+            }
           }
           <th>Acciones</th>
         </tr>
@@ -13,7 +15,9 @@
         @for (registro of filas(); track $index) {
           <tr>
             @for (columna of columnas(); track columna) {
+              @if (etiqueta(columna).toLocaleLowerCase() !== "id") {
               <td>{{ valor(registro, columna) }}</td>
+              }
             }
             <td><button mat-button type="button" (click)="abrirDetalle(registro)">Ver detalles</button></td>
           </tr>
