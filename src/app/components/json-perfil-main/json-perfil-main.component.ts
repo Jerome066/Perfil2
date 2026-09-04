@@ -28,6 +28,7 @@ export class JsonPerfilMainComponent {
   tabActual = signal(0);
   opcionSeleccionada = signal<JsonMenu | null>(null);
   registros = signal<JsonInfo[]>([]);
+  datosPrimitivos = signal<JsonInfo[]>([]); // primitivos sueltos de la tab actual, siempre visibles
   terminoBusqueda = signal('');
   pageSize = signal(5);
   pageIndex = signal(0);
@@ -61,8 +62,7 @@ export class JsonPerfilMainComponent {
     }
 
     this.opcionSeleccionada.set(null);
-    this.registros.set(this.datosArbol.obtenerDatosPrimitivos());
-    
+    this.registros.set([]);
   }
 
   seleccionarOpcion(opcion: JsonMenu): void {
@@ -75,10 +75,8 @@ export class JsonPerfilMainComponent {
     const registrosPaginables = this.datosArbol.obtenerRegistrosMostrables(registrosBase);
 
     this.registros.set([
-      // ...this.datosArbol.obtenerDatosPrimitivos(), // datos primitivos sueltos del JSON 
       ...registrosPaginables
     ]);
-    console.log(this.datosArbol.obtenerDatosPrimitivos());
   }
 
   formatoString(cadena: string): string {
