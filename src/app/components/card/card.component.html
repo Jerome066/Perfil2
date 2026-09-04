@@ -6,14 +6,15 @@
     }
     <mat-card-content>
       @for (campo of camposVisibles(registro); track $index) {
-      <div class="campo">
-        <strong>{{ campo.etiqueta }}</strong>
-        <span>{{ campo.dato }}</span>
-      </div>
+        @if (campo.etiqueta?.toLocaleLowerCase() !== "id") {
+          <div class="campo">
+            <strong>{{ campo.etiqueta }}</strong>
+            <span>{{ campo.dato }}</span>
+          </div>
+        }
       }
     </mat-card-content>
-    <mat-card-actions><button mat-button type="button" (click)="abrirDetalle(registro)">Ver
-        detalles</button></mat-card-actions>
+    <mat-card-actions><button mat-button type="button" (click)="abrirDetalle(registro)">Ver detalles</button></mat-card-actions>
   </mat-card>
   }
 </div>
