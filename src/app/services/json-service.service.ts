@@ -45,8 +45,11 @@ export class JsonServiceService {
       }
     }
     this.tabs = this.tabs.filter(info => info.menuOpt && info.menuOpt.length > 0);
-      console.log(this.datosPrimitivos);
-
+    this.tabs.push({
+      tabName: 'Información',
+      valor: '',
+      menuOpt: []
+    });
     return this.tabs;
   }
 
