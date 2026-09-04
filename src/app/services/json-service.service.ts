@@ -22,15 +22,37 @@ export class JsonServiceService {
     this.nuevoArchivo();
     this.tabs = nodos.map(tab => ({
       tabName: tab.nombre,
+      valor: String(tab.valor),
       menuOpt: tab.hijos
     }));
+
+    this.datosPrimitivos.push(
+      ...this.tabs.filter(info => info.menuOpt && info.menuOpt.length === 0)
+      .map(info => ({
+        nombre: info.tabName,
+        ruta: "",
+        nivel: 1,
+        tipo: 'string' as const,
+        valor: info.valor,
+        hijos: info.menuOpt
+      }))
+    );
+    for(const opciones of this.tabs){
+      for(const hijo of opciones.menuOpt){
+        if(hijo.tipo !== 'array' && hijo.tipo !== 'object'){
+          this.datosPrimitivos.push(hijo);
+        }
+      }
+    }
+    this.tabs = this.tabs.filter(info => info.menuOpt && info.menuOpt.length > 0);
+      console.log(this.datosPrimitivos);
+
     return this.tabs;
   }
 
   actualizarMenu(num: number): JsonMenu[] {
     const tab = this.tabs[num];
     this.menus = [];
-    this.datosPrimitivos = [];
 
     if (!tab) {
       return this.menus;
@@ -43,8 +65,6 @@ export class JsonServiceService {
           idReferencia: tab.tabName,
           informacion: nodo
         });
-      } else {
-        this.datosPrimitivos.push(nodo);
       }
     }
     return this.menus;
