@@ -1,7 +1,7 @@
 <app-json-tree (arbolConstruido)="obtenerArbol($event)"></app-json-tree>
 
 @if (tieneArchivo()) {
-  <app-json-tabs [tabs]="tabs()" (tabActual)="actualizarTab($event)"></app-json-tabs>
+  <app-json-tabs [tabs]="tabs()" [extraTab]="datosPrimitivos()" (tabActual)="actualizarTab($event)"></app-json-tabs>
 
   @if (menus().length > 0) {
     <div class="menu-container">
@@ -28,6 +28,10 @@
   <div class="contenido">
     @if (registrosPaginados().length > 0) {
       <app-json-information [registros]="registrosPaginados()" [vista]="vista()"></app-json-information>
+    } @else if(tabExtra()){
+      @for (lista of this.obtenerDatosSueltos(); track $index) {
+        <p>{{formatoString(lista.etiqueta + ": " + lista.dato)}}</p>
+      }
     } @else {
       <p>No hay registros que coincidan con el filtro.</p>
     }
