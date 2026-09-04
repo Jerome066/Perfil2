@@ -44,6 +44,7 @@ export class JsonServiceService {
         }
       }
     }
+    //Añade el nuevo tab de Información para los datos primitivos que esten flotando en el JSON
     this.tabs = this.tabs.filter(info => info.menuOpt && info.menuOpt.length > 0);
     this.tabs.push({
       tabName: 'Información',
@@ -53,25 +54,31 @@ export class JsonServiceService {
     return this.tabs;
   }
 
+  //Obtiene las opciones de los menú por medio del arreglo de tabs
   actualizarMenu(num: number): JsonMenu[] {
-    const tab = this.tabs[num];
-    this.menus = [];
+  const tab = this.tabs[num];
+  this.menus = [];
 
-    if (!tab) {
-      return this.menus;
-    }
-
-    for (const nodo of tab.menuOpt) {
-      if (nodo.tipo === 'object' || nodo.tipo === 'array') {
-        this.menus.push({
-          option: nodo.nombre,
-          idReferencia: tab.tabName,
-          informacion: nodo
-        });
-      }
-    }
+  if (!tab) {
     return this.menus;
   }
+
+  for (const nodo of tab.menuOpt) {
+    if ((nodo.tipo === 'object' || nodo.tipo === 'array') && nodo.hijos.length > 0) {
+      this.menus.push({
+        option: nodo.nombre,
+        idReferencia: tab.tabName,
+        informacion: nodo
+      });
+    }
+  }
+  if (this.menus.length === 0 && (this.tabs[num].tabName !== "Información" && this.datosPrimitivos)) {
+    this.tabs.splice(num, 1);
+  }
+
+  return this.menus;
+}
+
 
   obtenerMenu(): JsonMenu[] {
     return this.menus;
@@ -202,9 +209,7 @@ export class JsonServiceService {
   }
 
   private tratarArrayDeArrays(nodo: JsonNode): JsonInfo[] {
-    // Pendiente de definir la representación.
     return this.tratarArrayMixto(nodo);
-
   }
 
   private tratarArrayMixto(nodo: JsonNode): JsonInfo[] {
