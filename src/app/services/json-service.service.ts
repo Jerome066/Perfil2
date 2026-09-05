@@ -20,30 +20,38 @@ export class JsonServiceService {
 
   obtenerTabs(nodos: JsonNode[]): JsonTabs[] {
     this.nuevoArchivo();
+    var tabvacios: number[] = [];
     this.tabs = nodos.map(tab => ({
       tabName: tab.nombre,
       valor: String(tab.valor),
       menuOpt: tab.hijos
     }));
 
-    this.datosPrimitivos.push(
+    this.datosPrimitivos.push( //Nivel 2
       ...this.tabs.filter(info => info.menuOpt && info.menuOpt.length === 0)
-      .map(info => ({
-        nombre: info.tabName,
-        ruta: "",
-        nivel: 1,
-        tipo: 'string' as const,
-        valor: info.valor,
-        hijos: info.menuOpt
-      }))
+        .map(info => ({
+          nombre: info.tabName,
+          ruta: "",
+          nivel: 1,
+          tipo: 'string' as const,
+          valor: info.valor,
+          hijos: info.menuOpt
+        }))
     );
-    for(const opciones of this.tabs){
-      for(const hijo of opciones.menuOpt){
-        if(hijo.tipo !== 'array' && hijo.tipo !== 'object'){
+
+    //Obtiene los datos primitivos que no esten dentro de un array o un objeto // 3 Nivel en adelante
+    for (const [i,opciones] of this.tabs.entries()) {
+      for (const hijo of opciones.menuOpt) {
+        if(hijo.hijos.length > 0){
+          tabvacios.push(i);
+        }
+        if (hijo.tipo !== 'array' && hijo.tipo !== 'object') {
           this.datosPrimitivos.push(hijo);
         }
       }
     }
+    this.tabs = this.tabs.filter((_, index) => tabvacios.includes(index));
+
     //Añade el nuevo tab de Información para los datos primitivos que esten flotando en el JSON
     this.tabs = this.tabs.filter(info => info.menuOpt && info.menuOpt.length > 0);
     this.tabs.push({
@@ -56,28 +64,30 @@ export class JsonServiceService {
 
   //Obtiene las opciones de los menú por medio del arreglo de tabs
   actualizarMenu(num: number): JsonMenu[] {
-  const tab = this.tabs[num];
-  this.menus = [];
+    const tab = this.tabs[num];
+    this.menus = [];
 
-  if (!tab) {
+    if (!tab) {
+      return this.menus;
+    }
+
+    // filtra los registros que sean objetos y arrays
+    for (const nodo of tab.menuOpt) {
+      if ((nodo.tipo === 'object' || nodo.tipo === 'array') && nodo.hijos.length > 0) {
+        this.menus.push({
+          option: nodo.nombre,
+          idReferencia: tab.tabName,
+          informacion: nodo
+        });
+      }
+    }
+    // Elimina el tab sin información
+    // if (this.menus.length === 0 && (this.tabs[num].tabName !== "Información" && this.datosPrimitivos)) {
+    //   this.tabs.splice(num, 1);
+    // }
+
     return this.menus;
   }
-
-  for (const nodo of tab.menuOpt) {
-    if ((nodo.tipo === 'object' || nodo.tipo === 'array') && nodo.hijos.length > 0) {
-      this.menus.push({
-        option: nodo.nombre,
-        idReferencia: tab.tabName,
-        informacion: nodo
-      });
-    }
-  }
-  if (this.menus.length === 0 && (this.tabs[num].tabName !== "Información" && this.datosPrimitivos)) {
-    this.tabs.splice(num, 1);
-  }
-
-  return this.menus;
-}
 
 
   obtenerMenu(): JsonMenu[] {
