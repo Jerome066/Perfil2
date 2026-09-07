@@ -81,10 +81,6 @@ export class JsonServiceService {
         });
       }
     }
-    // Elimina el tab sin información
-    // if (this.menus.length === 0 && (this.tabs[num].tabName !== "Información" && this.datosPrimitivos)) {
-    //   this.tabs.splice(num, 1);
-    // }
 
     return this.menus;
   }
