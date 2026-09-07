@@ -14,12 +14,15 @@ export class TableComponent {
   private dialog = inject(MatDialog);
   registros = input<JsonInfo[]>([]);
   filas = computed(() => this.obtenerFilas(this.registros()));
+
   columnas = computed(() => {
     const nombres = new Set<string>();
     for (const registro of this.filas()) {
       for (const campo of this.camposVisibles(registro)) {
-        nombres.add(campo.etiqueta ?? campo.dato);
-        if (nombres.size === 5) return [...nombres];
+        if(!["id", "migracion id"].includes(this.etiqueta(campo.etiqueta +"").toLocaleLowerCase())){
+          nombres.add(campo.etiqueta ?? campo.dato);
+        }
+        if (nombres.size === 6) return [...nombres];
       }
     }
     return [...nombres];
@@ -40,7 +43,7 @@ export class TableComponent {
 
   private camposVisibles(registro: JsonInfo): JsonInfo[] {
     return registro.esTitulo
-      ? registro.sugDato.filter(campo => !campo.esTitulo).slice(0, 5)
+      ? registro.sugDato.filter(campo => !campo.esTitulo).slice(0, 6)
       : [registro];
   }
 
