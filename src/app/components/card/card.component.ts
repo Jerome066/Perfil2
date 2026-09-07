@@ -17,7 +17,7 @@ export class CardComponent {
 
   camposVisibles(registro: JsonInfo): JsonInfo[] {
     return registro.esTitulo
-      ? registro.sugDato.filter(campo => !campo.esTitulo).slice(0, 5)
+      ? registro.sugDato.filter(campo => !campo.esTitulo).slice(0, 7)
       : [registro];
   }
 
